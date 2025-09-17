@@ -2,7 +2,6 @@ export const authService = {
   login: async (email, password) => {
     try {
       // SIMULAÇÃO - substitua pela sua API real
-      console.log('Tentando login com:', email, password);
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Simulação de login bem-sucedido
@@ -18,15 +17,12 @@ export const authService = {
         localStorage.setItem('authToken', token);
         localStorage.setItem('user', JSON.stringify(user));
         
-        console.log('Login bem-sucedido!');
         return { success: true, user };
       } else {
-        console.log('Credenciais inválidas');
         return { success: false, error: 'Email ou senha incorretos' };
       }
       
     } catch (error) {
-      console.error('Erro no login:', error);
       return { 
         success: false, 
         error: 'Erro no login. Tente novamente.' 
@@ -50,7 +46,45 @@ export const authService = {
     window.location.href = '/';
   },
 
-  // Método adicional para verificar se está autenticado
+  register: async (userData) => {
+    try {
+      // SIMULAÇÃO - substitua pela sua API real
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const { email } = userData;
+      
+      // Verifica se o email já existe (simulação)
+      if (email === 'admin@escola.com') {
+        return { 
+          success: false, 
+          error: 'Este email já está em uso' 
+        };
+      }
+      
+      // Simulação de registro bem-sucedido
+      const user = { 
+        id: Date.now(), 
+        email: email, 
+        name: 'Novo Usuário',
+        role: 'user'
+      };
+      
+      const token = 'mock-token-register-' + Date.now();
+      
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      console.log('Usuário registrado com sucesso!');
+      return { success: true, user };
+      
+    } catch (error) {
+      return { 
+        success: false, 
+        error: 'Erro no registro. Tente novamente.' 
+      };
+    }
+  },
+
   isAuthenticated: () => {
     return !!localStorage.getItem('authToken');
   }

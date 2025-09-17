@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/config';
+import { authService } from '../../services/authService';
 import './Dashboard.css';
 import { Link } from 'react-router-dom';
 
@@ -9,12 +8,12 @@ const Dashboard = () => {
   const { currentUser } = useAuth();
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-    }
-  };
+  try {
+    authService.logout();
+  } catch (error) {
+    console.error('Erro ao fazer logout:', error);
+  }
+};
 
   return (
     <div className="dashboard-container">
@@ -36,32 +35,38 @@ const Dashboard = () => {
         </div>
 
         <div className="features-grid">
-          <Link to="/livros" className="feature-card-link">
-          <div className="feature-card">
-            <h3>📚 Meus Livros</h3>
-            <p>Visualize e gerencie todos os livros da sua coleção</p>
-            <button className="feature-btn">Acessar</button>
-          </div>
-          </Link>
+  <Link to="/livros" className="feature-card-link">
+    <div className="feature-card">
+      <h3>📚 Meus Livros</h3>
+      <p>Visualize e gerencie todos os livros da sua coleção</p>
+      <div className="feature-btn">Acessar</div>
+    </div>
+  </Link>
 
-          <div className="feature-card">
-            <h3>🔍 Buscar Livros</h3>
-            <p>Encontre novos livros para adicionar à sua coleção</p>
-            <button className="feature-btn">Buscar</button>
-          </div>
+  <Link to="/alunos" className="feature-card-link">
+    <div className="feature-card">
+      <h3>👥 Alunos</h3>
+      <p>Cadastre e gerencie os alunos da escola</p>
+      <div className="feature-btn">Gerenciar</div>
+    </div>
+  </Link>
 
-          <div className="feature-card">
-            <h3>📊 Estatísticas</h3>
-            <p>Veja analytics sobre sua biblioteca</p>
-            <button className="feature-btn">Visualizar</button>
-          </div>
+  <Link to="/emprestimos" className="feature-card-link">
+    <div className="feature-card">
+      <h3>🔄 Empréstimos</h3>
+      <p>Controle os empréstimos de livros</p>
+      <div className="feature-btn">Controlar</div>
+    </div>
+  </Link>
 
-          <div className="feature-card">
-            <h3>⚙️ Configurações</h3>
-            <p>Personalize sua experiência</p>
-            <button className="feature-btn">Configurar</button>
-          </div>
-        </div>
+  <Link to="/buscar" className="feature-card-link">
+    <div className="feature-card">
+      <h3>🔍 Buscar Livros</h3>
+      <p>Encontre livros no acervo</p>
+      <div className="feature-btn">Buscar</div>
+    </div>
+  </Link>
+</div>
       </main>
     </div>
   );

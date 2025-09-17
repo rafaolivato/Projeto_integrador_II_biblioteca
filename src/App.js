@@ -6,6 +6,8 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import GerenciarLivros from './components/Livros/GerenciarLivros';
+import GerenciarAlunos from './components/Alunos/GerenciarAlunos';
+import GerenciarEmprestimos from './components/Emprestimos/GerenciarEmprestimos';
 
 function App() {
   return (
@@ -14,21 +16,37 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-          path="/livros" 
+          <Route
+            path="/livros"
             element={
               <ProtectedRoute>
                 <GerenciarLivros />
               </ProtectedRoute>
-            } 
+            }
+          />
+          <Route
+            path="/alunos"
+            element={
+              <ProtectedRoute>
+                <GerenciarAlunos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/emprestimos"
+            element={
+              <ProtectedRoute>
+                <GerenciarEmprestimos />
+              </ProtectedRoute>
+            }
           />
 
           {/* Adicione outras rotas aqui posteriormente */}

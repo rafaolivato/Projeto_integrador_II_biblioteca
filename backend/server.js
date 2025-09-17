@@ -23,3 +23,23 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+// Rota padrão
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Bem-vindo à API da Biblioteca!',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      livros: '/api/livros',
+      alunos: '/api/alunos',
+      emprestimos: '/api/emprestimos'
+    }
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+  console.log(`📚 API disponível em: http://localhost:${PORT}`);
+});

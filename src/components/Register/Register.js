@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/config';
+import { authService } from '../../services/authService';
 import './Register.css';
 import { useNavigate} from 'react-router-dom';
 
@@ -54,50 +53,31 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      setIsLoading(true);
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          userData.email,
-          userData.password
-        );
-        
-        console.log('Usuário criado:', userCredential.user);
+  e.preventDefault();
+  
+  if (validateForm()) {
+    setIsLoading(true);
+    try {
+      // Substitua a lógica do Firebase por:
+      const result = await authService.register(userData);
+      
+      if (result.success) {
         setSuccess(true);
-        setTimeout(() => {
-            navigate('/');
-        }, 2000);
-
         setUserData({ email: '', password: '', confirmPassword: '' });
-        
-      } catch (error) {
-        console.error('Erro no cadastro:', error);
-        
-        let errorMessage = 'Erro ao criar conta. Tente novamente.';
-        
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-            errorMessage = 'Este email já está em uso.';
-            break;
-          case 'auth/invalid-email':
-            errorMessage = 'Email inválido.';
-            break;
-          case 'auth/weak-password':
-            errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres.';
-            break;
-          default:
-            errorMessage = error.message;
-        }
-        
-        setErrors({ submit: errorMessage });
-      } finally {
-        setIsLoading(false);
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      } else {
+        setErrors({ submit: result.error });
       }
+      
+    } catch (error) {
+      setErrors({ submit: 'Erro ao criar conta. Tente novamente.' });
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+};
 
   if (success) {
     return (
