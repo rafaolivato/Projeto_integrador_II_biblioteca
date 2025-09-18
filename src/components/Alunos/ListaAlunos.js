@@ -12,14 +12,19 @@ const ListaAlunos = ({ onEdit, onNew }) => {
       setLoading(true);
       const resultado = await alunosService.buscarTodosAlunos();
       
+      console.log('Resultado:', resultado); // Para debug
+      
       if (resultado.success) {
-        setAlunos(resultado.data);
+        // Garante que sempre seja um array
+        setAlunos(Array.isArray(resultado.data) ? resultado.data : []);
         setError('');
       } else {
         setError(resultado.error);
+        setAlunos([]); // Garante array vazio em caso de erro
       }
     } catch (err) {
       setError('Erro ao carregar alunos');
+      setAlunos([]); // Garante array vazio em caso de erro
     } finally {
       setLoading(false);
     }
@@ -55,7 +60,7 @@ const ListaAlunos = ({ onEdit, onNew }) => {
       </div>
 
       <div className="alunos-grid">
-        {alunos.length === 0 ? (
+        {!alunos || alunos.length === 0 ? (
           <div className="empty-state">
             <p>Nenhum aluno cadastrado ainda.</p>
             <button onClick={onNew} className="btn-primary">

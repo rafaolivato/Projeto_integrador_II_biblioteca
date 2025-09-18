@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const emprestimoController = require('../controllers/emprestimoController');
 
-// Rota temporária - vamos implementar depois
-router.get('/', (req, res) => {
-  res.json({ message: 'API de empréstimos funcionando!' });
-});
+// Todas as rotas de empréstimos
+router.get('/', emprestimoController.getAll);
+router.get('/:id', emprestimoController.getById);
+router.post('/', emprestimoController.create);
+router.put('/:id/devolver', emprestimoController.devolver);
+router.get('/aluno/:alunoId', emprestimoController.getByAluno);
 
 module.exports = router;

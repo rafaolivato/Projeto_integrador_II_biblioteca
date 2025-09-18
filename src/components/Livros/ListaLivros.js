@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { livrosService } from '../../services/livrosService';
 import './Livros.css';
+import { Link } from 'react-router-dom'; 
 
 const ListaLivros = ({ onEdit, onNew }) => {
   const [livros, setLivros] = useState([]);
@@ -48,7 +49,12 @@ const ListaLivros = ({ onEdit, onNew }) => {
   return (
     <div className="lista-livros">
       <div className="header">
+        <div className="header-left">
+          <Link to="/dashboard" className="btn-voltar">
+            ← Voltar ao Dashboard
+          </Link>
         <h2>Acervo de Livros</h2>
+        </div>
         <button onClick={onNew} className="btn-primary">
           + Novo Livro
         </button>

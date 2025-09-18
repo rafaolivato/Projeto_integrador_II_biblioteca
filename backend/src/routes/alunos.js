@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const alunoController = require('../controllers/alunoController');
 
-// Rota temporária - vamos implementar depois
-router.get('/', (req, res) => {
-  res.json({ message: 'API de alunos funcionando!' });
-});
+// Todas as rotas de alunos
+router.get('/', alunoController.getAll);
+router.get('/:id', alunoController.getById);
+router.post('/', alunoController.create);
+router.put('/:id', alunoController.update);
+router.delete('/:id', alunoController.delete);
 
 module.exports = router;
