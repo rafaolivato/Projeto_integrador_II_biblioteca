@@ -1,36 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { emprestimosService } from '../../services/emprestimosService';
+import { Link } from 'react-router-dom';
 import './Emprestimos.css';
 
 const ListaEmprestimos = ({ onEdit, onNew }) => {
   const [emprestimos, setEmprestimos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  // REMOVA estas linhas:
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState('');
   const [filtroStatus, setFiltroStatus] = useState('todos');
+  const [carregando, setCarregando] = useState(true); // ← Use um nome diferente se precisar
+  const [erro, setErro] = useState(''); // ← Use um nome diferente se precisar
 
-  const carregarEmprestimos = async () => {
-    try {
-      setLoading(true);
-      let resultado;
-      
-      if (filtroStatus === 'todos') {
-        resultado = await emprestimosService.buscarTodosEmprestimos();
-      } else {
-        resultado = await emprestimosService.buscarEmprestimosAtivos();
+  useEffect(() => {
+    const carregarEmprestimos = async () => {
+      try {
+        setCarregando(true);
+        let resultado;
+        
+        if (filtroStatus === 'todos') {
+          resultado = await emprestimosService.buscarTodosEmprestimos();
+        } else {
+          resultado = await emprestimosService.buscarEmprestimosAtivos();
+        }
+        
+        if (resultado.success) {
+          setEmprestimos(Array.isArray(resultado.data) ? resultado.data : []);
+          setErro('');
+        } else {
+          setErro(resultado.error);
+        }
+      } catch (err) {
+        setErro('Erro ao carregar empréstimos');
+      } finally {
+        setCarregando(false);
       }
-      
-      if (resultado.success) {
-        setEmprestimos(Array.isArray(resultado.data) ? resultado.data : []);
-        setError('');
-      } else {
-        setError(resultado.error);
-      }
-    } catch (err) {
-      setError('Erro ao carregar empréstimos');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    carregarEmprestimos();
+  }, [filtroStatus]);
 
   const handleDevolucao = async (id, livroNome) => {
     if (window.confirm(`Confirmar devolução do livro "${livroNome}"?`)) {
@@ -38,7 +46,7 @@ const ListaEmprestimos = ({ onEdit, onNew }) => {
       
       if (resultado.success) {
         alert('Livro devolvido com sucesso!');
-        carregarEmprestimos();
+        setFiltroStatus('todos'); // Força recarregamento
       } else {
         alert(`Erro ao devolver: ${resultado.error}`);
       }
@@ -70,38 +78,19 @@ const ListaEmprestimos = ({ onEdit, onNew }) => {
     return diffDays;
   };
 
-  useEffect(() => {
-  const carregarEmprestimos = async () => {
-    try {
-      setLoading(true);
-      let resultado;
-      
-      if (filtroStatus === 'todos') {
-        resultado = await emprestimosService.buscarTodosEmprestimos();
-      } else {
-        resultado = await emprestimosService.buscarEmprestimosAtivos();
-      }
-      
-      if (resultado.success) {
-        setEmprestimos(Array.isArray(resultado.data) ? resultado.data : []);
-        setError('');
-      } else {
-        setError(resultado.error);
-      }
-    } catch (err) {
-      setError('Erro ao carregar empréstimos');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  carregarEmprestimos();
-}, [filtroStatus]);
+  // REMOVA estas linhas se não estiver usando:
+  // if (loading) return <div className="loading">Carregando empréstimos...</div>;
+  // if (error) return <div className="error">Erro: {error}</div>;
 
   return (
     <div className="lista-emprestimos">
       <div className="header">
-        <h2>Controle de Empréstimos</h2>
+        <div className="header-left">
+          <Link to="/dashboard" className="btn-voltar">
+            ← Voltar
+          </Link>
+          <h2>Controle de Empréstimos</h2>
+        </div>
         <div className="header-actions">
           <select 
             value={filtroStatus} 
@@ -118,8 +107,12 @@ const ListaEmprestimos = ({ onEdit, onNew }) => {
         </div>
       </div>
 
+      {/* Adicione estados de carregamento e erro se necessário */}
+      {carregando && <div className="loading">Carregando empréstimos...</div>}
+      {erro && <div className="error">Erro: {erro}</div>}
+
       <div className="emprestimos-grid">
-        {emprestimos.length === 0 ? (
+        {!carregando && !erro && emprestimos.length === 0 ? (
           <div className="empty-state">
             <p>Nenhum empréstimo encontrado.</p>
             <button onClick={onNew} className="btn-primary">
@@ -151,7 +144,7 @@ const ListaEmprestimos = ({ onEdit, onNew }) => {
                   )}
                   
                   {emprestimo.status === 'ativo' && (
-                    <p className={estaAtrasado ? 'dias-atrasado' : 'dios-restantes'}>
+                    <p className={estaAtrasado ? 'dias-atrasado' : 'dias-restantes'}>
                       <strong>{estaAtrasado ? 'Atrasado: ' : 'Dias restantes: '}</strong>
                       {Math.abs(diasRestantes)} {estaAtrasado ? 'dias' : 'dias'}
                     </p>

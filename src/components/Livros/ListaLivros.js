@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { livrosService } from '../../services/livrosService';
 import './Livros.css';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 const ListaLivros = ({ onEdit, onNew }) => {
   const [livros, setLivros] = useState([]);
@@ -12,7 +12,7 @@ const ListaLivros = ({ onEdit, onNew }) => {
     try {
       setLoading(true);
       const resultado = await livrosService.buscarTodosLivros();
-      
+
       if (resultado.success) {
         setLivros(resultado.data);
         setError('');
@@ -29,7 +29,7 @@ const ListaLivros = ({ onEdit, onNew }) => {
   const handleDeletar = async (id, tombo) => {
     if (window.confirm(`Tem certeza que deseja deletar o livro de tombo ${tombo}?`)) {
       const resultado = await livrosService.deletarLivro(id);
-      
+
       if (resultado.success) {
         alert('Livro deletado com sucesso!');
         carregarLivros();
@@ -49,11 +49,13 @@ const ListaLivros = ({ onEdit, onNew }) => {
   return (
     <div className="lista-livros">
       <div className="header">
+
+
+        <h2>Acervo de Livros</h2>
         <div className="header-left">
           <Link to="/dashboard" className="btn-voltar">
-            ← Voltar ao Dashboard
+            ← Voltar
           </Link>
-        <h2>Acervo de Livros</h2>
         </div>
         <button onClick={onNew} className="btn-primary">
           + Novo Livro
@@ -77,7 +79,7 @@ const ListaLivros = ({ onEdit, onNew }) => {
                   {livro.quantidade > 0 ? 'Disponível' : 'Indisponível'}
                 </span>
               </div>
-              
+
               <div className="livro-info">
                 <p><strong>Tombo:</strong> {livro.tombo}</p>
                 <p><strong>Quantidade:</strong> {livro.quantidade} unidade(s)</p>
@@ -87,13 +89,13 @@ const ListaLivros = ({ onEdit, onNew }) => {
               </div>
 
               <div className="livro-actions">
-                <button 
+                <button
                   onClick={() => onEdit(livro)}
                   className="btn-secondary"
                 >
                   Editar
                 </button>
-                <button 
+                <button
                   onClick={() => handleDeletar(livro.id, livro.tombo)}
                   className="btn-danger"
                 >

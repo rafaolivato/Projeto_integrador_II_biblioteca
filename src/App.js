@@ -8,6 +8,7 @@ import './App.css';
 import GerenciarLivros from './components/Livros/GerenciarLivros';
 import GerenciarAlunos from './components/Alunos/GerenciarAlunos';
 import GerenciarEmprestimos from './components/Emprestimos/GerenciarEmprestimos';
+import BuscarLivros from './components/Buscar/BuscarLivros';
 
 function App() {
   return (
@@ -48,8 +49,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/buscar"
+            element={
+              <ProtectedRoute>
+                <BuscarLivros />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Adicione outras rotas aqui posteriormente */}
+
+            {/* Adicione outras rotas aqui posteriormente */}
         </Routes>
       </div>
     </Router>

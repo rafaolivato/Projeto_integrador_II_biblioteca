@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { alunosService } from '../../services/alunosService';
 import './Alunos.css';
+import { Link } from 'react-router-dom';
 
 const ListaAlunos = ({ onEdit, onNew }) => {
   const [alunos, setAlunos] = useState([]);
@@ -54,6 +55,11 @@ const ListaAlunos = ({ onEdit, onNew }) => {
     <div className="lista-alunos">
       <div className="header">
         <h2>Gestão de Alunos</h2>
+        <div className="header-left">
+          <Link to="/dashboard" className="btn-voltar">
+            ← Voltar
+          </Link>
+        </div>
         <button onClick={onNew} className="btn-primary">
           + Novo Aluno
         </button>
