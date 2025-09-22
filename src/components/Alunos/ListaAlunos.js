@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { alunosService } from '../../services/alunosService';
-import './Alunos.css';
 import { Link } from 'react-router-dom';
+import ImportarAlunos from './ImportarAlunos'; // ← Adicione este import
+import './Alunos.css';
 
 const ListaAlunos = ({ onEdit, onNew }) => {
   const [alunos, setAlunos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
+  const [mostrarImportar, setMostrarImportar] = useState(false); // ← Estado para controlar o modal
 
   const carregarAlunos = async () => {
     try {
-      setLoading(true);
+      setCarregando(true);
       const resultado = await alunosService.buscarTodosAlunos();
       
-      console.log('Resultado:', resultado); // Para debug
+      console.log('Resultado:', resultado);
       
       if (resultado.success) {
-        // Garante que sempre seja um array
         setAlunos(Array.isArray(resultado.data) ? resultado.data : []);
-        setError('');
+        setErro('');
       } else {
-        setError(resultado.error);
-        setAlunos([]); // Garante array vazio em caso de erro
+        setErro(resultado.error);
+        setAlunos([]);
       }
     } catch (err) {
-      setError('Erro ao carregar alunos');
-      setAlunos([]); // Garante array vazio em caso de erro
+      setErro('Erro ao carregar alunos');
+      setAlunos([]);
     } finally {
-      setLoading(false);
+      setCarregando(false);
     }
   };
 
@@ -44,34 +45,66 @@ const ListaAlunos = ({ onEdit, onNew }) => {
     }
   };
 
+  // Função chamada quando a importação é bem-sucedida
+  const handleImportacaoSucesso = () => {
+    carregarAlunos(); // Recarrega a lista de alunos
+  };
+
   useEffect(() => {
     carregarAlunos();
   }, []);
 
-  if (loading) return <div className="loading">Carregando alunos...</div>;
-  if (error) return <div className="error">Erro: {error}</div>;
+  if (carregando) return <div className="loading">Carregando alunos...</div>;
+  if (erro) return <div className="error">Erro: {erro}</div>;
 
   return (
     <div className="lista-alunos">
       <div className="header">
-        <h2>Gestão de Alunos</h2>
         <div className="header-left">
           <Link to="/dashboard" className="btn-voltar">
             ← Voltar
           </Link>
+          <h2>Gestão de Alunos</h2>
         </div>
-        <button onClick={onNew} className="btn-primary">
-          + Novo Aluno
-        </button>
+        
+        <div className="header-actions">
+          {/* Botão para abrir o modal de importação */}
+          <button 
+            onClick={() => setMostrarImportar(true)} 
+            className="btn-importar"
+          >
+            📊 Importar Excel
+          </button>
+          
+          <button onClick={onNew} className="btn-primary">
+            + Novo Aluno
+          </button>
+        </div>
       </div>
 
+      {/* Modal de importação */}
+      {mostrarImportar && (
+        <ImportarAlunos 
+          onClose={() => setMostrarImportar(false)}
+          onImportSuccess={handleImportacaoSucesso}
+        />
+      )}
+
       <div className="alunos-grid">
-        {!alunos || alunos.length === 0 ? (
+        {alunos.length === 0 ? (
           <div className="empty-state">
             <p>Nenhum aluno cadastrado ainda.</p>
-            <button onClick={onNew} className="btn-primary">
-              Adicionar Primeiro Aluno
-            </button>
+            <div className="empty-state-actions">
+              <button onClick={onNew} className="btn-primary">
+                Adicionar Primeiro Aluno
+              </button>
+              <button 
+                onClick={() => setMostrarImportar(true)} 
+                className="btn-importar"
+              >
+                📊 Importar de Planilha
+              </button>
+            </div>
           </div>
         ) : (
           alunos.map((aluno) => (
@@ -104,6 +137,30 @@ const ListaAlunos = ({ onEdit, onNew }) => {
           ))
         )}
       </div>
+
+      {/* Estatísticas rápidas */}
+      {alunos.length > 0 && (
+        <div className="estatisticas">
+          <div className="estatistica-item">
+            <span className="numero">{alunos.length}</span>
+            <span className="label">Total de Alunos</span>
+          </div>
+          
+          <div className="estatistica-item">
+            <span className="numero">
+              {[...new Set(alunos.map(a => a.turma))].length}
+            </span>
+            <span className="label">Turmas Diferentes</span>
+          </div>
+          
+          <div className="estatistica-item">
+            <span className="numero">
+              {[...new Set(alunos.map(a => a.periodo))].length}
+            </span>
+            <span className="label">Períodos</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

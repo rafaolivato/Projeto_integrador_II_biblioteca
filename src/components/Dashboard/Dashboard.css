@@ -102,3 +102,21 @@
   text-decoration: none;
   color: inherit;
 }
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  height: 100px; /* Ajuste conforme necessário */
+  width: auto;
+  /* Se a logo tiver fundo escuro, remova o filter abaixo */
+ 
+}
+
+/* Se a logo for clara e você quiser escurecer: */
+.logo.clara {
+  filter: brightness(0) invert(0); /* Logo na cor original */
+}

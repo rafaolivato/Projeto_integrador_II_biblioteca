@@ -1,0 +1,277 @@
+.importar-alunos-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.importar-alunos-modal {
+  background: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px 10px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.btn-fechar {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-fechar:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.modal-content {
+  padding: 1.5rem;
+}
+
+.instrucoes {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #667eea;
+}
+
+.instrucoes h4 {
+  margin-top: 0;
+  color: #2d3748;
+}
+
+.instrucoes ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.instrucoes li {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.formato-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.formato-tabela th,
+.formato-tabela td {
+  border: 1px solid #cbd5e0;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.formato-tabela th {
+  background: #e2e8f0;
+  font-weight: 600;
+}
+
+.upload-section {
+  margin-bottom: 1.5rem;
+}
+
+.upload-label {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-bottom: 0.5rem;
+}
+
+.upload-label:hover {
+  background: #5a67d8;
+}
+
+#arquivo-excel {
+  display: none;
+}
+
+.nome-arquivo {
+  display: block;
+  margin-top: 0.5rem;
+  color: #4a5568;
+  font-style: italic;
+}
+
+.preview-section {
+  border: 2px dashed #cbd5e0;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  background: #f7fafc;
+}
+
+.preview-section h4 {
+  margin-top: 0;
+  color: #2d3748;
+}
+
+.preview-table {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.preview-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.preview-table th,
+.preview-table td {
+  border: 1px solid #cbd5e0;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.preview-table th {
+  background: #e2e8f0;
+  font-weight: 600;
+}
+
+.preview-table td {
+  background: white;
+}
+
+.mapeamento-info {
+  background: #edf2f7;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.mapeamento-info ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.mapeamento-info li {
+  margin-bottom: 0.25rem;
+}
+
+.resultado {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.resultado.sucesso {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  color: #22543d;
+}
+
+.resultado.erro {
+  background: #fed7d7;
+  border: 1px solid #feb2b2;
+  color: #742a2a;
+}
+
+.detalhes-erros {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.detalhes-erros ul {
+  margin: 0.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5a67d8;
+}
+
+.btn-primary:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .importar-alunos-modal {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .preview-table {
+    font-size: 0.8rem;
+  }
+}
